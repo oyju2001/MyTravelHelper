@@ -2,6 +2,7 @@ package com.example.dsm2016.mytravelhelper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,21 +14,23 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     DatabaseReference mConditionRef;
     CustomMainListViewAdapter adapter;
-    ArrayList<String> userRoom;
     ListView myGroupListview;
     Button btn_inGroupActivity;
     Button btn_makeGroupActivity;
@@ -53,19 +56,15 @@ public class MainActivity extends AppCompatActivity
 
         btn_inGroupActivity = (Button) findViewById(R.id.btn_inGroupActivity);
         btn_makeGroupActivity = (Button) findViewById(R.id.btn_makeGroupActivity);
-        userRoom = new ArrayList<String>();
 
-        //final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        //mConditionRef = mDatabase.child("user").child(localUserCode).child("myGroup").;
-        //mConditionRef.addValueEventListener(mylistEvent);
-
+        localUserCode = "localkey";
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("user").child(localUserCode).child("myGroup").orderByChild("roomcode").startAt("-").addValueEventListener(mylistEvent);
+        mConditionRef = FirebaseDatabase.getInstance().getReference();
 
         adapter = new CustomMainListViewAdapter();
         myGroupListview = (ListView) findViewById(R.id.myGroupListview);
         myGroupListview.setAdapter(adapter);
-
-        adapter.addItem("1","2","3","4","f");
-        adapter.addItem("a","b","c","d","-LD3SFEcBZpvcZiZyV97");
 
         adapter.notifyDataSetChanged();
 
@@ -83,57 +82,52 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-//
-/*
     ValueEventListener mylistEvent = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            userRoom.clear();
+            //어찌저찌해서 code를 불러온다.
             if(dataSnapshot.exists()){
+                adapter.clear();
                 for(DataSnapshot messageData : dataSnapshot.getChildren()){
-                    String arr = messageData.getValue().toString();
-                    //어찌저찌해서 code를 불러온다.
-                    userRoom.add(arr);
+                    String a = messageData.getKey();
+                    mConditionRef.child("user").child("localkey").child("myGroup").child(a).child("roomcode")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            final String real = dataSnapshot.getValue(String.class).toString();
+
+                            mConditionRef.child("room").child(real).child("default")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            DataOne a = dataSnapshot.getValue(DataOne.class);
+                                            Log.w("messaga", a.getName());
+                                            adapter.addItem(a.getName(), a.getPlace(), a.getStartDate(), a.getEndDate(), real);
+                                            adapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
-            //list의 값을 바꿔주는 함수를 불러온다.
-            changeListview();
+
         }
 
         @Override
         public void onCancelled(DatabaseError databaseError) {
 
         }
-    };*/
-/*
-    public void changeListview(){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        for(String localGroupCode : userRoom){
-            mConditionRef = mDatabase.child("room").child(localGroupCode).child("default");
-            mConditionRef.addValueEventListener(defaultEvent);
-            //한번만 불러오면 되서 valueEventListener 필요x... 위에 mylistEvent에서 변경 모두 감지 (default는 변경하지 않으니까)
-        }
-        adapter.notifyDataSetChanged();
-    }
-
-    ValueEventListener defaultEvent = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            adapter.clear();
-            if (dataSnapshot.exists()) {
-                DataOne please = dataSnapshot.getValue(DataOne.class);
-                please.setCode(localGroupCode);
-                adapter.addItem(please);
-                //DataOne에 code에 localcode를 넣어주고
-            }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };*/
-//
+    };
 
     @Override
     public void onBackPressed() {
@@ -163,8 +157,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void inGroupActivity(View view){
-        Intent intent = new Intent(this, GroupActivity.class);
-        intent.putExtra("GroupCode","-LD3SFEcBZpvcZiZyV97");
+        Intent intent = new Intent(this, InGroupActivity.class);
         startActivity(intent);
     }
 

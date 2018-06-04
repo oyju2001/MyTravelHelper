@@ -76,7 +76,6 @@ public class MakeGroupActivity extends AppCompatActivity {
         }
 
         //코드발급
-
         //데이터베이스에 default 추가
         String key = mDatabase.child("room").push().getKey();
 
@@ -94,13 +93,15 @@ public class MakeGroupActivity extends AppCompatActivity {
         DataOne dataOne = new DataOne(input_groupName.getText().toString(), input_placeName.getText().toString(),startDate, endDate);
         mDatabase.child("room").child(key).child("default").setValue(dataOne);
 
-        //데이테베이스에 user등록
-        /*String kes = mDatabase.child("room").child(key).child("user").push().getKey();
-        mDatabase.child("room").child(key).child("user").child(kes).child("usercode").setValue(앱사용자의유저ID);*/
+        //유저에 룸 코드 등록
+        String s = mDatabase.child("user").child("localkey").child("myGroup").push().getKey();
+        mDatabase.child("user").child("localkey").child("myGroup").child(s).child("roomcode").setValue(key);
 
-        //위의 code는 앞으로 만들어서 넣어줘야됨
+        //DB에 유저등록
+        String kes = mDatabase.child("room").child(key).child("user").push().getKey();
+        mDatabase.child("room").child(key).child("user").child(kes).child("usercode").setValue("localkey");
+
         //초대코드 팝업 띄움
-
         Intent intent = new Intent(this, CodePopupActivity.class);
         intent.putExtra("code",key);
         startActivity(intent);

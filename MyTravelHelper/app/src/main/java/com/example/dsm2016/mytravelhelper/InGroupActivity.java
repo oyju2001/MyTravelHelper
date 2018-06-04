@@ -11,8 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Iterator;
 
 public class InGroupActivity extends AppCompatActivity {
 
@@ -20,6 +26,7 @@ public class InGroupActivity extends AppCompatActivity {
     EditText input_inviteCode;
     AlertDialog.Builder alert;
     DatabaseReference mDatabase;
+    DatabaseReference sDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +44,8 @@ public class InGroupActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("room");
+        sDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     public void inGroup(View v){
@@ -46,28 +54,44 @@ public class InGroupActivity extends AppCompatActivity {
             alert.show();
             return;
         }
-        String tempCode = input_inviteCode.getText().toString();
+        final String tempCode = input_inviteCode.getText().toString();
 //
-        //db에 tempCode가 있나 확인해주고 (자체적으로 있나 확인하거나 다 불러와서 하나씩 대조. 앞에것이 좋겠지)
-        mDatabase.child("room").equalTo(tempCode);
-        if(1-0 > 0){   //일치하는게 없을경우
-            alert.setMessage("일치하는 방이 없습니다");
-            alert.show();
-            return;
-        }
+        //db에 tempCode가 있나 확인해주고
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
 
+                while(child.hasNext()){
+                    if(child.next().getKey().equals(tempCode)){
+                        //localcode -myGroup과 room-tempcode-user에 넣어주기
+                        String key = sDatabase.child("user").child("localkey").child("myGroup").push().getKey();
+                        sDatabase.child("user").child("localkey").child("myGroup").child(key).child("roomcode").setValue(tempCode);
+                        String kes = sDatabase.child("room").child(tempCode).child("user").push().getKey();
+                        sDatabase.child("room").child(tempCode).child("user").child(kes).child("usercode").setValue("localkey");
+
+                        //그 방으로 이동하기
+                        Intent intent = new Intent(InGroupActivity.this, GroupActivity.class);
+                        intent.putExtra("GroupCode", tempCode);
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
+                }
+                alert.setMessage("일치하는 방이 없습니다");
+                alert.show();
+                return;
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 //
-        //일치하는 방이 있을경우 user-그사용자키-myGroup에 그룹을 넣어주고 방 정보에도 유저 넣어준다.
-        /*String key = mDatabase.child("user").child(앱사용자의유저ID).child("myGroup").push();
-        mDatabase.child("user").child(앱사용자의유저ID).child("myGroup").child(key).child("roomcode").setValue(tempCode);
-        String kes = mDatabase.child("room").child(tempCode).child("user").push().getKey();
-        mDatabase.child("room").child(tempCode).child("user").child(kes).child("usercode").setValue(앱사용자의유저ID);*/
 
-        //그 방으로 이동해준다.
-        Intent intent = new Intent(this, GroupActivity.class);
-        intent.putExtra("GroupCode", tempCode);
-        startActivity(intent);
-        finish();
 
     }
 }

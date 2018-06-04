@@ -24,15 +24,13 @@ public class CustomChoiceListViewAdapter extends BaseAdapter implements View.OnC
     }
 
     private ListBtnClickListener listBtnClickListener;
+    DBHelper dbHelper;
 
     public CustomChoiceListViewAdapter(ListBtnClickListener clickListener){
         this.listBtnClickListener = clickListener;
-
     }
 
     public ArrayList<Listview_my> listviewItemList = new ArrayList<Listview_my>();
-
-
 
     @Override
     public int getCount() {
@@ -71,14 +69,19 @@ public class CustomChoiceListViewAdapter extends BaseAdapter implements View.OnC
         itemText.setText(listViewItem.getText());
         checkText.setText(listViewItem.getIsCheckd());
 
+        //DB
+        dbHelper = new DBHelper(context, "MoneyBook.db",null,1);
+
         Button okButton = (Button)convertView.findViewById(R.id.check);
         okButton.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(checkText.getText().toString().equals("YES")){
+                    dbHelper.update(itemText.getText().toString(),"NO");
                     Listview_my item = new Listview_my(itemText.getText().toString(),"NO");
                     listviewItemList.set(position, item);
                 }else{
+                    dbHelper.update(itemText.getText().toString(), "YES");
                     Listview_my item = new Listview_my(itemText.getText().toString(),"YES");
                     listviewItemList.set(position, item);
                 }
@@ -94,16 +97,19 @@ public class CustomChoiceListViewAdapter extends BaseAdapter implements View.OnC
         //출처: http://recipes4dev.tistory.com/68 [개발자를 위한 레시피]
     }
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String text) {
+    public void addItem(String text, String text2) {
         Listview_my item = new Listview_my();
         item.setText(text);
-        item.setIsCheckd("NO");
+        item.setIsCheckd(text2);
 
         listviewItemList.add(item);
     }
 
-    public void deleteItem(int position){
+
+    public String deleteItem(int position){
+        String arr = listviewItemList.get(position).getText();
         listviewItemList.remove(position);
+        return arr;
     }
 
     public void onClick(View v){

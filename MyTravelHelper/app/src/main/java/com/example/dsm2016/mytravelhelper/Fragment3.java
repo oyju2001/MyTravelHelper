@@ -1,8 +1,12 @@
 package com.example.dsm2016.mytravelhelper;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -25,6 +32,9 @@ public class Fragment3 extends Fragment implements CustomChoiceListViewAdapter.L
     ListView listView;
     Button addButton;
     EditText addText;
+    DBHelper dbHelper;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -32,9 +42,20 @@ public class Fragment3 extends Fragment implements CustomChoiceListViewAdapter.L
         addText = (EditText) view.findViewById(R.id.input_additem);
 
         adapter = new CustomChoiceListViewAdapter(this);
-
         listView = (ListView) view.findViewById(R.id.listview_my);
         listView.setAdapter(adapter);
+
+        //local DB
+        dbHelper = new DBHelper(getContext(), "MoneyBook.db",null,1);
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String result = "";
+        // DB에 있는 데이터를 쉽게 처리하기 위해 Cursor를 사용하여 테이블에 있는 모든 데이터 출력
+        Cursor cursor = db.rawQuery("SELECT * FROM MONEYBOOK", null);
+        while (cursor.moveToNext()) {
+            adapter.addItem(cursor.getString(1),cursor.getString(2));
+        }
+        adapter.notifyDataSetChanged();
 
         //addButton event
         addButton = (Button) view.findViewById(R.id.btn_add);
@@ -44,19 +65,20 @@ public class Fragment3 extends Fragment implements CustomChoiceListViewAdapter.L
                 if(TextUtils.isEmpty(addText.getText())){
                     return;
                 }
-                adapter.addItem(addText.getText().toString());
+                dbHelper.insert(addText.getText().toString(), "NO");
+                adapter.addItem(addText.getText().toString(),"NO");
                 adapter.notifyDataSetChanged();
                 addText.setText("");
             }
         });
 
 
-
+/*
         //아이템 추가
         adapter.addItem("바디워시");
         adapter.addItem("샴푸");
         adapter.addItem("돈");
-        adapter.addItem("지도");
+        adapter.addItem("지도");*/
 
         return view;
     }
@@ -66,7 +88,8 @@ public class Fragment3 extends Fragment implements CustomChoiceListViewAdapter.L
         //Toast.makeText(view.getContext(), Integer.toString(position+1) + "item selected", Toast.LENGTH_SHORT).show();
         int count = adapter.getCount();
         if(position > -1 && position < count){
-            adapter.deleteItem(position);
+            String arr = adapter.deleteItem(position);
+            dbHelper.delete(arr);
         }
         adapter.notifyDataSetChanged();
     }

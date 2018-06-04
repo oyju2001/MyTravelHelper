@@ -38,9 +38,10 @@ public class CodePopupActivity extends Activity {
 
         // 방으로 이동
 
-        Intent intent = new Intent(this, CodePopupActivity.class);
-        intent.putExtra("code",text_inviteCode.getText().toString());
+        Intent intent = new Intent(this, GroupActivity.class);
+        intent.putExtra("GroupCode",text_inviteCode.getText().toString());
         startActivity(intent);
+        finish();
 
         /*ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("label", text_inviteCode.getText().toString());
