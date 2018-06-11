@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="2dp"
+        android:background="#555555"/>
 
-        <LinearLayout
+    <ListView
+        android:layout_margin="10dp"
+        android:id="@+id/listview_share"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:choiceMode="singleChoice">
+
+    </ListView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#555555"/>
+
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="7">
+
+        <EditText
+            android:id="@+id/input_addshareitem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:hint="추가할 목록 입력"
+            android:layout_toStartOf="@+id/btn_add" />
+
+        <Button
+            android:id="@+id/btn_shareadd"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="추가" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

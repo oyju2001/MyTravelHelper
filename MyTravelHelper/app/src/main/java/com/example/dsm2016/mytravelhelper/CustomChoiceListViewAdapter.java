@@ -70,7 +70,8 @@ public class CustomChoiceListViewAdapter extends BaseAdapter implements View.OnC
         checkText.setText(listViewItem.getIsCheckd());
 
         //DB
-        dbHelper = new DBHelper(context, "MoneyBook.db",null,1);
+        String local = ((GroupActivity)context).getLocalGroupCode().toUpperCase().substring(1);
+        dbHelper = new DBHelper(context, local+".db",null,1,local);
 
         Button okButton = (Button)convertView.findViewById(R.id.check);
         okButton.setOnClickListener(new Button.OnClickListener(){
@@ -104,7 +105,6 @@ public class CustomChoiceListViewAdapter extends BaseAdapter implements View.OnC
 
         listviewItemList.add(item);
     }
-
 
     public String deleteItem(int position){
         String arr = listviewItemList.get(position).getText();

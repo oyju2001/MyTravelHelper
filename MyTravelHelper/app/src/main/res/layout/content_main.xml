@@ -27,7 +27,7 @@
 
             <Button
                 android:id="@+id/btn_inGroupActivity"
-                android:layout_width="wrap_content"
+                android:layout_width="181dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
@@ -36,12 +36,12 @@
 
             <Button
                 android:id="@+id/btn_makeGroupActivity"
-                android:layout_width="wrap_content"
+                android:layout_width="141dp"
                 android:layout_height="wrap_content"
-                android:onClick="makeGroupActivity"
-                android:text="방 만들기"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:onClick="makeGroupActivity"
+                android:text="방 만들기" />
 
         </RelativeLayout>
 

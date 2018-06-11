@@ -13,33 +13,37 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".SplashActivity">
-
-        </activity>
+        <activity android:name=".SplashActivity" />
         <activity android:name=".InGroupActivity" />
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".SignInActivity" />
-        <activity android:name=".GroupActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".MyInfoActivity" />
+        <activity
+            android:name=".GroupActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".CodePopupActivity"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".MyInfoActivity" />
         <activity
             android:name=".WithdrawalActivity"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".MemoPopupActivity"
+        <activity
+            android:name=".MemoPopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".DeleteRoomActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".SharePopupActivity"
             android:theme="@android:style/Theme.Dialog"/>
     </application>
 

@@ -46,12 +46,13 @@ public class Fragment3 extends Fragment implements CustomChoiceListViewAdapter.L
         listView.setAdapter(adapter);
 
         //local DB
-        dbHelper = new DBHelper(getContext(), "MoneyBook.db",null,1);
+        String localCode = ((GroupActivity)getActivity()).getLocalGroupCode().toUpperCase().substring(1);
+        dbHelper = new DBHelper(getContext(), localCode+".db",null,1,localCode);
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String result = "";
         // DB에 있는 데이터를 쉽게 처리하기 위해 Cursor를 사용하여 테이블에 있는 모든 데이터 출력
-        Cursor cursor = db.rawQuery("SELECT * FROM MONEYBOOK", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM "+localCode, null);
         while (cursor.moveToNext()) {
             adapter.addItem(cursor.getString(1),cursor.getString(2));
         }
@@ -71,14 +72,6 @@ public class Fragment3 extends Fragment implements CustomChoiceListViewAdapter.L
                 addText.setText("");
             }
         });
-
-
-/*
-        //아이템 추가
-        adapter.addItem("바디워시");
-        adapter.addItem("샴푸");
-        adapter.addItem("돈");
-        adapter.addItem("지도");*/
 
         return view;
     }

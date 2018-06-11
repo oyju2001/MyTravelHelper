@@ -81,7 +81,6 @@
             android:layout_marginRight="30dp"
             android:layout_weight="0.10"
             android:background="@android:color/background_light"
-            android:onClick="okButton"
             android:text="확인"
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"

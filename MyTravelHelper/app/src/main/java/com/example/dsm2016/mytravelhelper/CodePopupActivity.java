@@ -31,16 +31,19 @@ public class CodePopupActivity extends Activity {
 
         text_inviteCode.setText(code);
 
+        btn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
     }
 
     public void okButton(){
 
-        // 방으로 이동
-
-        Intent intent = new Intent(this, GroupActivity.class);
-        intent.putExtra("GroupCode",text_inviteCode.getText().toString());
-        startActivity(intent);
+        // 닫기
         finish();
 
         /*ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);

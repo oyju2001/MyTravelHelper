@@ -3,9 +3,46 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#555555"/>
+
     <TextView
-        android:text="프래그먼트 4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="그룹 멤버"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <ListView
+        android:id="@+id/listview_member"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:choiceMode="singleChoice" />
+
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <Button
+            android:id="@+id/btn_showPopup"
+            android:layout_width="183dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:text="초대코드 확인" />
+
+        <Button
+            android:id="@+id/btn_deleteGroup"
+            android:layout_width="142dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="방 삭제" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

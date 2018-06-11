@@ -47,8 +47,8 @@ public class Fragment1 extends Fragment {
         startDate = (TextView) view.findViewById(R.id.startDate );
         endDate = (TextView) view.findViewById(R.id.endDate);
 
-         items = new ArrayList<String>() ;
-         adapter = new ArrayAdapter(getActivity() , android.R.layout.simple_list_item_single_choice, items) ;
+        items = new ArrayList<String>() ;
+        adapter = new ArrayAdapter(getActivity() , android.R.layout.simple_list_item_single_choice, items) ;
 
         final ListView listview = (ListView) view.findViewById(R.id.listview_memo) ;
         listview.setAdapter(adapter) ;

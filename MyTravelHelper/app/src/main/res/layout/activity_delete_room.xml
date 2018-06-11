@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DeleteRoomActivity"
     android:layout_width="300dp"
     android:layout_height="200dp"
     android:background="#ffffff"
-    tools:context="com.example.dsm2016.mytravelhelper.WithdrawalActivity"
     android:orientation="vertical">
 
     <TextView
@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:layout_marginTop="10dp"
-        android:text="정말 탈퇴하시겠습니까?"
+        android:text="정말 삭제하시겠습니까?"
         android:textSize="25dp"
         android:textColor="@color/black"
         android:visibility="visible" />
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="지워진 정보는 복구되지 않습니다."
+        android:text="지워진 정보는 복구되지 않습니다.\n 다른 사람들도 모두 강퇴됩니다."
         android:textColor="@color/gray"
         android:textSize="20dp"
         tools:layout_constraintTop_creator="1" />
@@ -33,26 +33,24 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp">
 
         <Button
-            android:id="@+id/btn_withdrawalOk"
+            android:id="@+id/btn_deleteGroupOk"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="Yes" />
 
         <Button
-            android:id="@+id/btn_withdrawalNo"
+            android:id="@+id/btn_deleteGroupNo"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="No"/>
 
-
     </RelativeLayout>
-
 
 </LinearLayout>

@@ -11,8 +11,6 @@ import android.widget.TextView;
 public class WithdrawalActivity extends Activity {
     Button btn_withdrawalOk;
     Button btn_withdrawalNo;
-    TextView textView7;
-    TextView textView8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,17 +18,23 @@ public class WithdrawalActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_withdrawal);
 
-        btn_withdrawalOk = (Button) findViewById(R.id.btn_withdrawalOk);
         btn_withdrawalNo = (Button) findViewById(R.id.btn_withdrawalNo);
-        textView7 = (TextView) findViewById(R.id.textView7);
-        textView8 = (TextView) findViewById(R.id.textView8);
+        btn_withdrawalNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        btn_withdrawalOk = (Button) findViewById(R.id.btn_withdrawalOk);
+        btn_withdrawalOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //DB에서 사용자 계정삭제
+                //Room에서 사용자 있는거 삭제
+                //LocalDB 사용자 삭제
+            }
+        });
+
     }
 
-    public void WithdrawalOk() {
-
-    }
-
-    public void WithdrawalNo(){
-
-    }
 }
